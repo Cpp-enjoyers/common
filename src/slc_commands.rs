@@ -98,12 +98,10 @@ pub enum ChatClientCommand {
     RemoveSender(NodeId),
     /// Ask a client to discover the server types in the network
     AskServersTypes,
-    /// Ask a client to connect to the server identified by the given ID
-    ConnectToChatServer(NodeId), // chat_server_id
-    /// Ask a client to send a message (first parameter) to anothe client (second parameter) through a chat server (third parameter)
-    SendChatText(String, NodeId, NodeId), // text, client_id, chat_server_id
     /// Scl shortcuts a packet to the client
     Shortcut(Packet),
+    /// Send a text message for processing by the client
+    SendMessage(String),
 }
 
 impl ClientCommand for ChatClientCommand {}
@@ -117,12 +115,10 @@ pub enum ChatClientEvent {
     Shortcut(Packet),
     /// communicate to scl the servers type of the servers in the network
     ServersTypes(HashMap<NodeId, ServerType>), // server_id, server_type
-    /// communicate to scl all the clients connected to a chat server
-    ClientsConnectedToChatServer(NodeId, Vec<NodeId>),
-    /// communicate to scl that a new message has arrived from the node with the given ID
-    NewMessageFrom(NodeId), // client_id, maybe add also chat_server_id
     /// inform that client received an unsupported request
     UnsupportedRequest,
+    /// Recieve text to print out
+    MessageReceived(String),
 }
 
 impl ClientEvent for ChatClientEvent {}
